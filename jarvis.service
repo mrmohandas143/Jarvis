@@ -1,0 +1,23 @@
+[Unit]
+Description=JARVIS Voice Assistant Service
+# Start after the network and sound devices are up
+After=network.target sound.target
+
+[Service]
+# Execute the jarvis.py script (ensure the paths match your Pi setup)
+ExecStart=/usr/bin/python3 /home/pi/Desktop/jarvis/jarvis.py
+WorkingDirectory=/home/pi/Desktop/jarvis/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+# This allows pygame/alsa to initialize properly without audio conflicts
+Environment="SDL_AUDIODRIVER=alsa"
+Environment="DISPLAY=:0"
+# Ensure the API key is passed through to the systemd service
+# Replace with the actual key before enabling if needed
+Environment="GEMINI_API_KEY=your_gemini_api_key_here"
+
+[Install]
+WantedBy=multi-user.target
